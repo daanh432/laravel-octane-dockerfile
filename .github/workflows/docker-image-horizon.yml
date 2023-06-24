@@ -1,9 +1,8 @@
 name: Publish Docker image (Horizon)
 
 on:
-  push:
-    branches:
-      - 'main'
+  schedule:
+    - cron: "0 0 1 * *"
   release:
     types: [published]
 
@@ -33,9 +32,9 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_IMAGE }}
           flavor: |
-            latest=true
+            latest=false
           tags: |
-            type=schedule,prefix=laravel-octane-base-,suffix=-horizon
+            type=schedule,pattern={{date 'YYYYMMDD-HHmmss'}},prefix=laravel-octane-base-,suffix=-horizon
             type=semver,pattern={{version}},prefix=laravel-octane-base-,suffix=-horizon
             type=sha,prefix=laravel-octane-base-,suffix=-horizon
 
@@ -49,3 +48,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      
+      - uses: gautamkrishnar/keepalive-workflow@v1

@@ -1,9 +1,8 @@
 name: Publish Docker image (App)
 
 on:
-  push:
-    branches:
-      - 'main'
+  schedule:
+    - cron: "0 0 1 * *"
   release:
     types: [published]
 
@@ -35,7 +34,7 @@ jobs:
           flavor: |
             latest=true
           tags: |
-            type=schedule,prefix=laravel-octane-base-,suffix=-app
+            type=schedule,pattern={{date 'YYYYMMDD-HHmmss'}},prefix=laravel-octane-base-,suffix=-app
             type=semver,pattern={{version}},prefix=laravel-octane-base-,suffix=-app
             type=sha,prefix=laravel-octane-base-,suffix=-app
 
@@ -49,3 +48,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - uses: gautamkrishnar/keepalive-workflow@v1
