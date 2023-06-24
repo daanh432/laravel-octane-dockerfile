@@ -40,8 +40,6 @@ RUN if [ ${OCTANE_SERVER} = "roadrunner" ]; then \
 
 FROM php:${PHP_VERSION}-cli-buster
 
-LABEL maintainer="Seyed Morteza Ebadi <seyed.me720@gmail.com>"
-
 ARG WWWUSER=1000
 ARG WWWGROUP=1000
 ARG TZ=UTC
@@ -51,8 +49,8 @@ ARG OCTANE_SERVER
 # Accepted values: app - horizon - scheduler
 ARG CONTAINER_MODE=app
 
-ARG APP_WITH_HORIZON=false
-ARG APP_WITH_SCHEDULER=false
+ARG APP_WITH_HORIZON=true
+ARG APP_WITH_SCHEDULER=true
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TERM=xterm-color \
@@ -241,7 +239,7 @@ RUN if [ ${INSTALL_MYSQL_CLIENT} = true ]; then \
 # pdo_pgsql
 ###########################################
 
-ARG INSTALL_PDO_PGSQL=false
+ARG INSTALL_PDO_PGSQL=true
 
 RUN if [ ${INSTALL_PDO_PGSQL} = true ]; then \
       docker-php-ext-install pdo_pgsql; \
@@ -251,7 +249,7 @@ RUN if [ ${INSTALL_PDO_PGSQL} = true ]; then \
 # pgsql
 ###########################################
 
-ARG INSTALL_PGSQL=false
+ARG INSTALL_PGSQL=true
 
 RUN if [ ${INSTALL_PGSQL} = true ]; then \
       docker-php-ext-install pgsql; \
